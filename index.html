@@ -1,0 +1,88 @@
+<html>
+
+<head>
+  <style>
+
+    *{
+      box-sizing: border-box;
+    }
+
+    header{
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .box{
+      height: 100px;
+      width: 100px;
+      border: 1px solid green;
+      display: inline-block;
+    }
+
+    .box.blink{
+      background: red;
+    }
+
+    .game-area{
+      margin: 20px 0;
+    }
+
+    .matrix-game{
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .game-controls{
+      margin: 10px 0;
+    }
+
+    .game-controls input{
+      width: 100px;
+      background: #c8c8c8;
+    }
+
+    .game-area{
+      display: inline-block;
+    }
+    #gameNotice{
+      color: green;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <main class="matrix-game">
+
+    <header>
+      Welcome to Game
+    </header>
+
+   <!--Controls starts here --> 
+    <section class="game-controls" id = "gameControls">
+      <input type = "button" value = "Start" id = "startGame" />
+      <input type = "button" value = "Reset" id = "stopGame" /> 
+    </section>
+   <!--Controls ends here --> 
+
+
+   <section id="gameNotice"></section>
+
+
+   <!--Matrix starts here --> 
+    <section class="game-area" id = "gameArea">
+    </section>
+  <!--Matrix ends here --> 
+
+  </main>
+
+</body>
+
+<script src="matrix.js"></script>
+
+</html>
