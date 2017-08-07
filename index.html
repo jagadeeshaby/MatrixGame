@@ -16,16 +16,37 @@
     }
 
     .box{
-      height: 10vh;
+      height: 15vh;
       width: 20vw;
       border: 1px solid green;
       display: inline-block;
       max-width: 100px;
-      max-height: 100px;
+      max-height: 85px;
     }
 
     .box.blink{
       background: red;
+    }
+
+    ul#gameLevels{
+      list-style-type: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    ul#gameLevels li{
+      border: 1px solid;
+      padding: 5px;
+      margin: 0.05em;
+      border-radius: 5%;
+      background: #c8c8c8;
+    }
+
+    ul#gameLevels li.done{
+      background: green;
+      color: #fff;
+      border: 1px solid green;
     }
 
     .game-area{
@@ -74,6 +95,16 @@
       <input type = "button" value = "Reset" id = "stopGame" /> 
     </section>
    <!--Controls ends here --> 
+
+  <p> Start the game and keep clicking on the red highlighted box in the below matrix to score points. Level increases as you keep winning the game.</p>
+
+   <section>
+
+    <ul id = "gameLevels">
+
+    </ul>
+    
+   </section>
 
 
    <section id="gameNotice"></section>

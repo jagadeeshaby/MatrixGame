@@ -1,41 +1,76 @@
 var MATRIX_GAME = {
-  matrix_dimension: 4,
+  matrix_dimension: 3,
+  
   gameArea : document.getElementById("gameArea"),
   gameControls:  document.getElementById("gameControls"),
+  gameLevelElm: document.getElementById("gameLevels"),
+
   template: "<div class='box' id = 'matrix-box-{{id}}'></div>",
   gameNotice : document.getElementById("gameNotice"),
-  delay: 750,
-  threshold: 5, 
+  delay: 1200,
+  threshold: 20, 
   lastInterval : null,
   gameInterval: null,
   score : 0,
   gameTime: 15,
   lastElem: null,
+  gameLevels: 10,
+  completedLevels : localStorage.getItem("completedLevel") || 1,
 
   initialize: function(){
     clearInterval(this.lastInterval);
     clearInterval(this.gameInterval);
     this.score = 0;
+    this.createMatrix();
+    if(!this.gameNotice.innerHTML){
+      this.gameNotice.innerHTML = "Start the Game - Score "+ this.getThreshold() + " to win"
+    }
   },
 
-  startGameTime : function(){
+  getDelay : function(){
+    return this.delay - (parseInt(this.completedLevels) * 75)
+  },
+
+  getThreshold: function(){
+    return this.threshold - (parseInt(this.completedLevels) + 1)
+  },
+
+  getMatrixDimension: function(){
+    return this.matrix_dimension + parseInt(parseInt(this.completedLevels)/3)
+  },
+
+  displayLevels: function(){
+    var levelsHtml = "",i;
+    for(i = 1; i <= this.gameLevels; i++){
+      if(parseInt(this.completedLevels) >= i){
+         levelsHtml = levelsHtml + "<li class='done'>Level "+ i +"</li>";
+      }else{
+         levelsHtml = levelsHtml + "<li>Level "+ i +"</li>";
+      }
+     
+    }
+    this.gameLevelElm.innerHTML = levelsHtml;
+  },
+
+  startGameTime: function(){
     var that = this;
-    this.initialize();
-    that.gameNotice.innerHTML = "Game Started - " + that.gameTime + " and Your Score "+ that.score;
     var time = that.gameTime;
     that.gameInterval = setInterval(function(){
       time--;
       if(time == 0){
         clearInterval(that.gameInterval);
-        if(that.score >= that.threshold){
+        if(that.score >= that.getThreshold()){
             that.gameNotice.innerHTML = "You Won and Your Score is " +  that.score;
+            that.completedLevels++;
+            localStorage.setItem("completedLevel", that.completedLevels);
         }else{
             that.gameNotice.innerHTML = "<div style='color:red;'>You lost and Your Score is " +  that.score + "</div>";
         }
-      
+        that.initialize();
         that.stopGame();
+
       }else{
-         that.gameNotice.innerHTML = "Game Started - " + time + " and Your Score "+ that.score;
+         that.gameNotice.innerHTML = "Game Started - Score "+ that.getThreshold() + " to Win. <br /><br /> Time left " + time + " and Your Score "+ that.score;
       }
 
     },1000);
@@ -50,16 +85,15 @@ var MATRIX_GAME = {
       if(that.lastElm){
         that.lastElm.classList.remove("blink");
       }
-      var currentElm  = document.getElementById("matrix-box-"+that.getRandomNumber(that.matrix_dimension*that.matrix_dimension,0));
+      var dimension = that.getMatrixDimension();
+      var currentElm  = document.getElementById("matrix-box-"+that.getRandomNumber(dimension * dimension,0));
       currentElm ? currentElm.classList.add("blink") : "";
       that.lastElm = currentElm;
-    },this.delay);
+    },this.getDelay());
   },
 
   stopGame: function(reset){
-    clearInterval(this.lastInterval);
-    clearInterval(this.gameInterval);
-    this.lastElm ? this.lastElm.classList.remove("blink") : "";
+
     if(reset){
       this.gameNotice.innerHTML = "";
     } 
@@ -71,11 +105,10 @@ var MATRIX_GAME = {
 
   createMatrix: function(matrix_dimension){
 
-    var dimension = matrix_dimension || this.matrix_dimension;
-    this.matrix_dimension = dimension;
+    this.displayLevels();
 
+    var dimension = matrix_dimension || this.getMatrixDimension();
     var totalBox  = dimension * dimension;
-
     var matrixHtml = "";
 
     for(var i = 1; i <= totalBox; i++){
@@ -113,6 +146,6 @@ var MATRIX_GAME = {
   }
 };
 
-MATRIX_GAME.createMatrix();
+MATRIX_GAME.initialize();
 
 
