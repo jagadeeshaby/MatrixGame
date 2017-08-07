@@ -57,7 +57,8 @@ var MATRIX_GAME = {
     var time = that.gameTime;
     that.gameInterval = setInterval(function(){
       time--;
-      if(time == 0){
+      console.log(time);
+      if(time == 1){
         clearInterval(that.gameInterval);
         if(that.score >= that.getThreshold()){
             that.gameNotice.innerHTML = "You Won and Your Score is " +  that.score;
@@ -66,11 +67,12 @@ var MATRIX_GAME = {
         }else{
             that.gameNotice.innerHTML = "<div style='color:red;'>You lost and Your Score is " +  that.score + "</div>";
         }
+        
         that.initialize();
         that.stopGame();
 
       }else{
-         that.gameNotice.innerHTML = "Game Started - Score "+ that.getThreshold() + " to Win. <br /><br /> Time left " + time + " and Your Score "+ that.score;
+         that.gameNotice.innerHTML = "Game Started - Score "+ that.getThreshold() + " to Win. Time left " + time + " and Your Score "+ that.score;
       }
 
     },1000);
@@ -93,7 +95,8 @@ var MATRIX_GAME = {
   },
 
   stopGame: function(reset){
-
+    clearInterval(this.lastInterval);
+    clearInterval(this.gameInterval);
     if(reset){
       this.gameNotice.innerHTML = "";
     } 
